@@ -1,0 +1,13 @@
+{
+	"server": {
+		"baseDir": [
+			"./frontend_demo",
+			"./contracts",
+			"./build/contracts"
+		],
+		"routes": {
+			"/vendor": "./node_modules",
+			"/adress": "./index.html"
+		}
+	}
+}

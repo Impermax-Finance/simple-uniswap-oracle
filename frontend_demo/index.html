@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+		<link href="/main.css" rel="stylesheet">
+	
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="/vendor/truffle-contract/dist/truffle-contract.js"></script>
+		<script src="/app.js"></script>
+	</head>
+	<body>
+		<div class="connect">
+			<button style="display:none" class="btn btn-primary" onClick="App.load()">Connect Metamask</button>
+		</div>
+		<main style="display:none">
+			<table class="table" id="pairList">
+				<thead>
+					<tr>
+						<th>Pair</th>
+						<th>Price</th>
+						<th>T</th>
+						<th>Last update</th>
+						<th style="width:12rem"><span id="refresh" onClick="App.refresh()">Refresh</span></th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<form id="search" onSubmit="App.searchByAddress(this); return false;" class="row">
+				<input id="address" type="text" class="form-control" placeholder="Search UniswapV2 pair by address..." autocomplete="off">
+				<input id="submit" class="form-control btn btn-primary ml-2" type="submit" value="Search">
+			</form>
+		</main>
+	</body>
+</html>

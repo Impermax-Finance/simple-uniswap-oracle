@@ -1,0 +1,40 @@
+body, div, table, td, form{padding: 0; margin: 0 auto; border-spacing: 0}
+*{outline:0}
+input[type=text]{text-decoration: none}
+
+.connect, main {
+	margin: 0 auto;
+	max-width: 1000px;
+}
+
+.connect {
+	padding-top: 100px;
+	text-align: center;
+}
+
+#pairList {
+	margin-top: 50px; 
+}
+
+#search {
+	margin: 50px 0 0 0; 
+}
+#search > input {
+	width: auto;
+}
+#search #address {
+	flex-grow: 1;
+}
+
+#refresh {
+	cursor: pointer;
+}
+#refresh:hover {
+	text-decoration: underline;
+}
+#refresh.refreshing {
+	cursor: initial;
+}
+#refresh.refreshing:hover {
+	text-decoration: none;
+}
