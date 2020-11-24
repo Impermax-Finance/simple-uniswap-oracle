@@ -13,7 +13,7 @@ require('chai')
 	.use(require('chai-as-promised'))
 	.should();
   
-let MIN_DELTA;
+let MIN_T;
 
 const priceCalculator = {
 	lastPrice: null,
@@ -26,7 +26,7 @@ const priceCalculator = {
 	},
 	calculatePrice: (T, t) => {
 		T = T*1; //normalize T
-		expect(T).to.be.at.least(MIN_DELTA);
+		expect(T).to.be.at.least(MIN_T);
 		let priceSum = 0, Tsum = 0;
 		priceIt = priceCalculator.lastPrice;
 		while (true) {
@@ -62,7 +62,7 @@ contract('Highlevel Scenario', function (accounts) {
 		uniPair = await makeMockUniswapV2Pair();
 		uniPairInverted = await makeMockUniswapV2Pair();
 		priceOracle = await makePriceOracle();
-		MIN_DELTA = await priceOracle.MIN_DELTA() * 1;
+		MIN_T = await priceOracle.MIN_T() * 1;
 	});
 
 	describe('scenario', () => {

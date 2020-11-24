@@ -2,7 +2,7 @@ pragma solidity ^0.5.16;
 
 interface ISimpleUniswapOracle {
 	event PriceUpdate(address indexed pair, uint256 priceCumulative, uint32 blockTimestamp, bool lastIsA);
-	function MIN_DELTA() external pure returns (uint32);
+	function MIN_T() external pure returns (uint32);
 	function getBlockTimestamp() external view returns (uint32);
 	function getPair(address uniswapV2Pair) external view returns (
 		uint256 priceCumulativeA,

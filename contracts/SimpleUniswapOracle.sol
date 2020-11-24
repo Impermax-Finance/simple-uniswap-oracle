@@ -7,7 +7,7 @@ import "./interfaces/ISimpleUniswapOracle.sol";
 contract SimpleUniswapOracle is ISimpleUniswapOracle {
 	using UQ112x112 for uint224;
 	
-	uint32 public constant MIN_DELTA = 600;
+	uint32 public constant MIN_T = 600;
 	
 	struct Pair {
 		uint256 priceCumulativeA;
@@ -60,7 +60,7 @@ contract SimpleUniswapOracle is ISimpleUniswapOracle {
 		uint256 priceCumulativeCurrent = getPriceCumulativeCurrent(uniswapV2Pair);
 		uint256 priceCumulativeLast;
 		
-		if (blockTimestamp - updateLast >= MIN_DELTA) {
+		if (blockTimestamp - updateLast >= MIN_T) {
 			// update
 			priceCumulativeLast = pair.lastIsA ? pair.priceCumulativeA : pair.priceCumulativeB;
 			if (pair.lastIsA) {
@@ -80,7 +80,7 @@ contract SimpleUniswapOracle is ISimpleUniswapOracle {
 		}
 		
 		T = blockTimestamp - updateLast; // overflow is desired
-		require(T >= MIN_DELTA, "UniswapOracle: NOT_READY"); //reverts only if the pair has just been initialized
+		require(T >= MIN_T, "UniswapOracle: NOT_READY"); //reverts only if the pair has just been initialized
 		// / is safe, and - overflow is desired
 		price = toUint224((priceCumulativeCurrent - priceCumulativeLast) / T);
 	}

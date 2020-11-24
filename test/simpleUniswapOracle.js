@@ -17,11 +17,11 @@ require('chai')
   
 contract('SimpleUniswapOracle', function (accounts) {
 	let root;
-	let MIN_DELTA;
+	let MIN_T;
 	before(async () => {
 		root = accounts[0];
 		const priceOracle = await makePriceOracle();
-		MIN_DELTA = await priceOracle.MIN_DELTA() * 1;
+		MIN_T = await priceOracle.MIN_T() * 1;
 	});
 
 	describe('initialize', () => {
@@ -65,13 +65,13 @@ contract('SimpleUniswapOracle', function (accounts) {
 				lastIsA: true
 			});
 		});
-		it("getResult fails if MIN_DELTA is not passed since initialization", async () => {
+		it("getResult fails if MIN_T is not passed since initialization", async () => {
 			await priceOracle._initialize(uniPair, 0);
-			await expectRevert(priceOracle._getResult(uniPair, MIN_DELTA-1), "UniswapOracle: NOT_READY");			
+			await expectRevert(priceOracle._getResult(uniPair, MIN_T-1), "UniswapOracle: NOT_READY");			
 		});
-		it("getResult succeed after MIN_DELTA since initialization", async () => {
+		it("getResult succeed after MIN_T since initialization", async () => {
 			await priceOracle._initialize(uniPair, 0);
-			await priceOracle._getResult(uniPair, MIN_DELTA);			
+			await priceOracle._getResult(uniPair, MIN_T);			
 		});
 	});
 	
@@ -134,34 +134,34 @@ contract('SimpleUniswapOracle', function (accounts) {
 			priceOracle = await makePriceOracle();
 			await uniPair._setPrice(0, price1);
 			await priceOracle._initialize(uniPair, 0);
-			await priceOracle._getResult(uniPair, MIN_DELTA);
+			await priceOracle._getResult(uniPair, MIN_T);
 		});
-		it("B to A if T >= MIN_DELTA update price", async () => {
-			let T = MIN_DELTA;
-			await uniPair._setPrice(MIN_DELTA * 1.5, price2);
+		it("B to A if T >= MIN_T update price", async () => {
+			let T = MIN_T;
+			await uniPair._setPrice(MIN_T * 1.5, price2);
 			const pairBefore = await priceOracle.getPair(uniPair.address);
-			const result = await priceOracle._getResult(uniPair, MIN_DELTA + T);
+			const result = await priceOracle._getResult(uniPair, MIN_T + T);
 			const pairAfter = await priceOracle.getPair(uniPair.address);
 			const expectedPriceCumulative = pairBefore.priceCumulativeB.add(uq112((price1+price2)*T/2));
 			expect(pairBefore.lastIsA).to.be.false;
 			expect(pairAfter.lastIsA).to.be.true;
 			expectEqual(pairAfter.priceCumulativeB, pairBefore.priceCumulativeB);
 			expectEqual(pairAfter.updateB, pairBefore.updateB);
-			expectEqual(pairAfter.updateA, MIN_DELTA + T);
+			expectEqual(pairAfter.updateA, MIN_T + T);
 			expectAlmostEqualUQ112x112(pairAfter.priceCumulativeA, expectedPriceCumulative);
 			expectAlmostEqualUQ112x112(result.price, uq112((price1+price2)/2));
 			expectEvent(result.receipt, 'PriceUpdate', {
 				pair: uniPair.address,
 				priceCumulative: pairAfter.priceCumulativeA,
-				blockTimestamp: new BN(MIN_DELTA + T),
+				blockTimestamp: new BN(MIN_T + T),
 				lastIsA: true
 			});
 		});
-		it("B to A if T < MIN_DELTA don't update and use previous priceCumulative", async () => {
-			let T = MIN_DELTA - 1;
-			await uniPair._setPrice(MIN_DELTA * 1.5, price2);
+		it("B to A if T < MIN_T don't update and use previous priceCumulative", async () => {
+			let T = MIN_T - 1;
+			await uniPair._setPrice(MIN_T * 1.5, price2);
 			const pairBefore = await priceOracle.getPair(uniPair.address);
-			const result = await priceOracle._getResult(uniPair, MIN_DELTA + T);
+			const result = await priceOracle._getResult(uniPair, MIN_T + T);
 			const pairAfter = await priceOracle.getPair(uniPair.address);
 			expect(pairBefore.lastIsA).to.be.false;
 			expect(pairAfter.lastIsA).to.be.false;
@@ -169,36 +169,36 @@ contract('SimpleUniswapOracle', function (accounts) {
 			expectEqual(pairAfter.priceCumulativeA, pairBefore.priceCumulativeA);
 			expectEqual(pairAfter.updateB, pairBefore.updateB);
 			expectEqual(pairAfter.updateA, pairBefore.updateA);
-			expectAlmostEqualUQ112x112(result.price, uq112((price1*MIN_DELTA*1.5+price2*(MIN_DELTA/2-1))/(MIN_DELTA*2-1)));
+			expectAlmostEqualUQ112x112(result.price, uq112((price1*MIN_T*1.5+price2*(MIN_T/2-1))/(MIN_T*2-1)));
 		});
-		it("A to B if T >= MIN_DELTA update price", async () => {
-			let T = MIN_DELTA;
-			await priceOracle._getResult(uniPair, MIN_DELTA * 2);
-			await uniPair._setPrice(MIN_DELTA * 2.5, price2);
+		it("A to B if T >= MIN_T update price", async () => {
+			let T = MIN_T;
+			await priceOracle._getResult(uniPair, MIN_T * 2);
+			await uniPair._setPrice(MIN_T * 2.5, price2);
 			const pairBefore = await priceOracle.getPair(uniPair.address);
-			const result = await priceOracle._getResult(uniPair, MIN_DELTA * 2 + T);
+			const result = await priceOracle._getResult(uniPair, MIN_T * 2 + T);
 			const pairAfter = await priceOracle.getPair(uniPair.address);
 			const expectedPriceCumulative = pairBefore.priceCumulativeA.add(uq112((price1+price2)*T/2));
 			expect(pairBefore.lastIsA).to.be.true;
 			expect(pairAfter.lastIsA).to.be.false;
 			expectEqual(pairAfter.priceCumulativeA, pairBefore.priceCumulativeA);
 			expectEqual(pairAfter.updateA, pairBefore.updateA);
-			expectEqual(pairAfter.updateB, MIN_DELTA * 2 + T);
+			expectEqual(pairAfter.updateB, MIN_T * 2 + T);
 			expectAlmostEqualUQ112x112(pairAfter.priceCumulativeB, expectedPriceCumulative);
 			expectAlmostEqualUQ112x112(result.price, uq112((price1+price2)/2));
 			expectEvent(result.receipt, 'PriceUpdate', {
 				pair: uniPair.address,
 				priceCumulative: pairAfter.priceCumulativeB,
-				blockTimestamp: new BN(MIN_DELTA * 2 + T),
+				blockTimestamp: new BN(MIN_T * 2 + T),
 				lastIsA: false
 			});
 		});
-		it("A to B if T < MIN_DELTA don't update and use previous priceCumulative", async () => {
-			let T = MIN_DELTA - 1;
-			await priceOracle._getResult(uniPair, MIN_DELTA * 2);
-			await uniPair._setPrice(MIN_DELTA * 2.5, price2);
+		it("A to B if T < MIN_T don't update and use previous priceCumulative", async () => {
+			let T = MIN_T - 1;
+			await priceOracle._getResult(uniPair, MIN_T * 2);
+			await uniPair._setPrice(MIN_T * 2.5, price2);
 			const pairBefore = await priceOracle.getPair(uniPair.address);
-			const result = await priceOracle._getResult(uniPair, MIN_DELTA * 2 + T);
+			const result = await priceOracle._getResult(uniPair, MIN_T * 2 + T);
 			const pairAfter = await priceOracle.getPair(uniPair.address);
 			expect(pairBefore.lastIsA).to.be.true;
 			expect(pairAfter.lastIsA).to.be.true;
@@ -206,7 +206,7 @@ contract('SimpleUniswapOracle', function (accounts) {
 			expectEqual(pairAfter.priceCumulativeA, pairBefore.priceCumulativeA);
 			expectEqual(pairAfter.updateB, pairBefore.updateB);
 			expectEqual(pairAfter.updateA, pairBefore.updateA);
-			expectAlmostEqualUQ112x112(result.price, uq112((price1*MIN_DELTA*1.5+price2*(MIN_DELTA/2-1))/(MIN_DELTA*2-1)));
+			expectAlmostEqualUQ112x112(result.price, uq112((price1*MIN_T*1.5+price2*(MIN_T/2-1))/(MIN_T*2-1)));
 		});
 	});
 });

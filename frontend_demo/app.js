@@ -66,7 +66,7 @@ let App = {
 		App.contracts.SimpleUniswapOracle = TruffleContract(SimpleUniswapOracle);
 		App.contracts.SimpleUniswapOracle.setProvider(App.web3Provider);
 		App.contracts.SimpleUniswapOracle.defaults({from: App.account});
-		App.simpleUniswapOracle = await App.contracts.SimpleUniswapOracle.at('0x3d897827218Eb629526f4be9760E4E824c5576cF');
+		App.simpleUniswapOracle = await App.contracts.SimpleUniswapOracle.at('0xdE6b4133651806CC6E95b9672790D634262A1f49');
 		//App.simpleUniswapOracle = await App.contracts.SimpleUniswapOracle.deployed();
 		
 		const UniswapV2Pair = await $.getJSON("/IUniswapV2Pair.json");
@@ -79,7 +79,7 @@ let App = {
 	},
 	
 	loadCostants: async () => {
-		App.MIN_DELTA = await App.simpleUniswapOracle.MIN_DELTA();
+		App.MIN_T = await App.simpleUniswapOracle.MIN_T();
 	},
 	
 	render: async () => {
@@ -145,8 +145,8 @@ let App = {
 		}
 
 		const now = Date.now() / 1000;
-		const lastUpdateAIsOldEnough = (now - pair.updateA >= App.MIN_DELTA);
-		const lastUpdateBIsOldEnough = (now - pair.updateB >= App.MIN_DELTA);
+		const lastUpdateAIsOldEnough = (now - pair.updateA >= App.MIN_T);
+		const lastUpdateBIsOldEnough = (now - pair.updateB >= App.MIN_T);
 
 		row.append( $('<td>').text(`${token0Symbol}-${token1Symbol}`) );
 		
@@ -266,9 +266,9 @@ let App = {
 		const progressBar = $('<div class="progress-bar progress-bar-striped progress-bar-animated ml-0" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">');
 		const updateCountDown = () => {
 			const now = Math.round(Date.now() / 1000);
-			let current = App.MIN_DELTA - (now - lastUpdate);
+			let current = App.MIN_T - (now - lastUpdate);
 			current += 60; //The onchain timestamp seems to be off...
-			const percentage = (App.MIN_DELTA - current) / App.MIN_DELTA * 100;
+			const percentage = (App.MIN_T - current) / App.MIN_T * 100;
 			if (current <= 0) return App.refreshRow(row);			
 			secondsCounter.text(secondsToTime(current));
 			progressBar.attr('aria-valuenow', percentage).width(percentage+'%');
