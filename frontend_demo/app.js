@@ -66,7 +66,7 @@ let App = {
 		App.contracts.SimpleUniswapOracle = TruffleContract(SimpleUniswapOracle);
 		App.contracts.SimpleUniswapOracle.setProvider(App.web3Provider);
 		App.contracts.SimpleUniswapOracle.defaults({from: App.account});
-		App.simpleUniswapOracle = await App.contracts.SimpleUniswapOracle.at('0xdE6b4133651806CC6E95b9672790D634262A1f49');
+		App.simpleUniswapOracle = await App.contracts.SimpleUniswapOracle.at('0x3c010c718A40838DD2FA83d8C83B24C304F068Cd');
 		//App.simpleUniswapOracle = await App.contracts.SimpleUniswapOracle.deployed();
 		
 		const UniswapV2Pair = await $.getJSON("/IUniswapV2Pair.json");
