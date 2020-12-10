@@ -17,11 +17,10 @@ require('chai')
   
 contract('SimpleUniswapOracle', function (accounts) {
 	let root;
-	let MIN_T;
+	const MIN_T = 3600;
 	before(async () => {
 		root = accounts[0];
 		const priceOracle = await makePriceOracle();
-		MIN_T = await priceOracle.MIN_T() * 1;
 	});
 
 	describe('initialize', () => {
@@ -47,6 +46,10 @@ contract('SimpleUniswapOracle', function (accounts) {
 		it("initialize revert if not IUniswapV2Pair", async () => {
 			await expectRevert.unspecified(priceOracle.initialize(root));
 		});
+		it("initialize revert if already initialized", async () => {
+			await priceOracle.initialize(uniPair.address);
+			await expectRevert(priceOracle.initialize(uniPair.address), "UniswapOracle: ALREADY_INITIALIZED");
+		});
 		it("initialize correctly", async () => {
 			await uniPair._setPrice(0, price);
 			const expectedPriceCumulative = (await uniPair.price0CumulativeLast()).add(uq112(price*t));
@@ -65,7 +68,10 @@ contract('SimpleUniswapOracle', function (accounts) {
 				lastIsA: true
 			});
 		});
-		it("getResult fails if MIN_T is not passed since initialization", async () => {
+		it("getResult fails if the pair is not initialized", async () => {
+			await expectRevert(priceOracle._getResult(uniPair, MIN_T-1), "UniswapOracle: NOT_INITIALIZED");			
+		});
+		it("getResult fails if MIN_T has not passed since initialization", async () => {
 			await priceOracle._initialize(uniPair, 0);
 			await expectRevert(priceOracle._getResult(uniPair, MIN_T-1), "UniswapOracle: NOT_READY");			
 		});
@@ -106,20 +112,20 @@ contract('SimpleUniswapOracle', function (accounts) {
 			await uniPairB._setPrice(0, 0.34);
 			await priceOracle._initialize(uniPairA, 0);
 			await priceOracle._initialize(uniPairB, 0);
-			resultA = await priceOracle._getResult(uniPairA, 1000);
-			resultB = await priceOracle._getResult(uniPairB, 1000);
-			expectEqual(resultA.T, 1000);
-			expectEqual(resultB.T, 1000);
+			resultA = await priceOracle._getResult(uniPairA, MIN_T);
+			resultB = await priceOracle._getResult(uniPairB, MIN_T);
+			expectEqual(resultA.T, MIN_T);
+			expectEqual(resultB.T, MIN_T);
 			expectAlmostEqualUQ112x112(resultA.price, uq112(1.97));
 			expectAlmostEqualUQ112x112(resultB.price, uq112(0.34));
-			await uniPairA._setPrice(1000, 2.04);
-			await uniPairB._setPrice(1000, 0.39);
-			await uniPairA._setPrice(1500, 2.09);
-			await uniPairB._setPrice(1500, 0.31);
-			resultA = await priceOracle._getResult(uniPairA, 2000);
-			resultB = await priceOracle._getResult(uniPairB, 2000);
-			expectEqual(resultA.T, 1000);
-			expectEqual(resultB.T, 1000);
+			await uniPairA._setPrice(MIN_T, 2.04);
+			await uniPairB._setPrice(MIN_T, 0.39);
+			await uniPairA._setPrice(MIN_T*1.5, 2.09);
+			await uniPairB._setPrice(MIN_T*1.5, 0.31);
+			resultA = await priceOracle._getResult(uniPairA, MIN_T*2);
+			resultB = await priceOracle._getResult(uniPairB, MIN_T*2);
+			expectEqual(resultA.T, MIN_T);
+			expectEqual(resultB.T, MIN_T);
 			expectAlmostEqualUQ112x112(resultA.price, uq112((2.04+2.09)/2));
 			expectAlmostEqualUQ112x112(resultB.price, uq112((0.39+0.31)/2));
 		});

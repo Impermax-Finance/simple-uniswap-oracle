@@ -37,7 +37,7 @@ contract SimpleUniswapOracle is ISimpleUniswapOracle {
 	
 	function initialize(address uniswapV2Pair) external {
 		Pair storage pairStorage = getPair[uniswapV2Pair];
-		require (!pairStorage.initialized, "UniswapOracle: ALREADY_INITIALIZED");
+		require(!pairStorage.initialized, "UniswapOracle: ALREADY_INITIALIZED");
 		
 		uint256 priceCumulativeCurrent = getPriceCumulativeCurrent(uniswapV2Pair);
 		uint32 blockTimestamp = getBlockTimestamp();
@@ -52,7 +52,7 @@ contract SimpleUniswapOracle is ISimpleUniswapOracle {
 	
 	function getResult(address uniswapV2Pair) external returns (uint224 price, uint32 T) {
 		Pair memory pair = getPair[uniswapV2Pair];
-		require (pair.initialized, "UniswapOracle: NOT_INITIALIZED");
+		require(pair.initialized, "UniswapOracle: NOT_INITIALIZED");
 		Pair storage pairStorage = getPair[uniswapV2Pair];
 				
 		uint32 blockTimestamp = getBlockTimestamp();

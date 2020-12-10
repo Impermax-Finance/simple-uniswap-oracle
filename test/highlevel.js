@@ -12,8 +12,8 @@ const {
 require('chai')
 	.use(require('chai-as-promised'))
 	.should();
-  
-let MIN_T;
+ 
+const MIN_T = 3600;
 
 const priceCalculator = {
 	lastPrice: null,
@@ -50,10 +50,6 @@ async function addPrice(t, price) {
 	await uniPair._setPrice(t, price);
 	priceCalculator.addPrice(t, price);
 }
-async function addPriceInverted(t, price) {
-	await uniPairInverted._setPrice(t, price);
-	priceCalculator.addPrice(t, 1/price);
-}
 
 contract('Highlevel Scenario', function (accounts) {
 	let root;
@@ -62,7 +58,6 @@ contract('Highlevel Scenario', function (accounts) {
 		uniPair = await makeMockUniswapV2Pair();
 		uniPairInverted = await makeMockUniswapV2Pair();
 		priceOracle = await makePriceOracle();
-		MIN_T = await priceOracle.MIN_T() * 1;
 	});
 
 	describe('scenario', () => {
@@ -71,59 +66,51 @@ contract('Highlevel Scenario', function (accounts) {
 		});
 		it("initialize", async () => {
 			await addPrice(0, 2.9);
-			result = await priceOracle._initialize(uniPair, 200);
+			result = await priceOracle._initialize(uniPair, MIN_T*0.1);
 		});
 		it("revert if not ready", async () => {
-			await addPrice(500, 3.1);
-			await expectRevert(priceOracle._getResult(uniPair, 600), "UniswapOracle: NOT_READY");
+			await addPrice(MIN_T*0.5, 3.1);
+			await expectRevert(priceOracle._getResult(uniPair, MIN_T*0.6), "UniswapOracle: NOT_READY");
 		});
 		
 		[
 			{prices: [
-					{timestamp: 1000, price: 4.1},
-			], t: 1200},
-			{prices: [], t: 1400},
-			{prices: [], t: 1900},
-			{prices: [], t: 2700},
+					{timestamp: MIN_T*1.2, price: 4.1},
+			], t: MIN_T*1.3},
+			{prices: [], t: MIN_T*1.5},
+			{prices: [], t: MIN_T*2.4},
+			{prices: [], t: MIN_T*3.9},
 			{prices: [
-					{timestamp: 2900, price: 5.1},
-			], t: 2900},
+					{timestamp: MIN_T*4.1, price: 5.1},
+			], t: MIN_T*5.4},
 			{prices: [
-					{timestamp: 3000, price: 4.7},
-			], t: 3800},
+					{timestamp: MIN_T*5.5, price: 4.7},
+			], t: MIN_T*5.8},
 			{prices: [
-					{timestamp: 4000, price: 0.1},
-			], t: 4800},
+					{timestamp: MIN_T*6.1, price: 0.1},
+			], t: MIN_T*6.3},
 			{prices: [
-					{timestamp: 5000, price: 0.16},
-					{timestamp: 5100, price: 0.31},
-					{timestamp: 5200, price: 0.5},
-					{timestamp: 5300, price: 0.11},
-					{timestamp: 5400, price: 0.13},
-					{timestamp: 5500, price: 0.11},
-					{timestamp: 5600, price: 0.45},
-					{timestamp: 5700, price: 0.21},
-			], t: 5800},
+					{timestamp: MIN_T*6.5, price: 0.16},
+					{timestamp: MIN_T*6.6, price: 0.31},
+					{timestamp: MIN_T*6.7, price: 0.5},
+					{timestamp: MIN_T*6.8, price: 0.11},
+					{timestamp: MIN_T*7.0, price: 0.13},
+					{timestamp: MIN_T*7.2, price: 0.11},
+					{timestamp: MIN_T*7.4, price: 0.45},
+					{timestamp: MIN_T*7.6, price: 0.21},
+			], t: MIN_T*7.8},
 			{prices: [
-					{timestamp: 6000, price: 0.16},
-					{timestamp: 7100, price: 0.31},
-					{timestamp: 8200, price: 0.5},
-					{timestamp: 9300, price: 0.11},
-					{timestamp: 10400, price: 0.13},
-					{timestamp: 11500, price: 0.11},
-					{timestamp: 12600, price: 0.45},
-					{timestamp: 13700, price: 0.21},
-					{timestamp: 14400, price: 0.13},
-					{timestamp: 15500, price: 0.11},
-					{timestamp: 16600, price: 0.45},
-					{timestamp: 17700, price: 0.21},
-					{timestamp: 18600, price: 0.45},
-					{timestamp: 19700, price: 0.21},
-			], t: 20000},
+					{timestamp: MIN_T*8.5, price: 0.13},
+					{timestamp: MIN_T*9.6, price: 0.11},
+					{timestamp: MIN_T*10.6, price: 0.45},
+					{timestamp: MIN_T*11.6, price: 0.21},
+					{timestamp: MIN_T*14.6, price: 0.45},
+					{timestamp: MIN_T*19.6, price: 0.21},
+			], t: MIN_T*20},
 		].forEach((testCase) => {
 			it(`getResult for ${JSON.stringify(testCase)}`, async () => {
 				for (price of testCase.prices) {
-					await addPrice(price.timestamp, price.price);
+					await addPrice(Math.round(price.timestamp), price.price);
 				}
 				result = await priceOracle._getResult(uniPair, testCase.t);
 				expectAlmostEqualUQ112x112(result.price, uq112(priceCalculator.calculatePrice(result.T, testCase.t)));
