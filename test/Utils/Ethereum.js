@@ -12,6 +12,10 @@ function encodeParameters(types, values) {
 	return abi.encode(types, values);
 }
 
+function encodePacked(types, values) {
+	return ethers.utils.solidityPack(types, values);
+}
+
 async function etherBalance(addr) {
 	return ethers.utils.bigNumberify(new BigNum(await web3.eth.getBalance(addr)).toFixed());
 }
@@ -127,6 +131,7 @@ async function sendFallback(contract, opts = {}) {
 module.exports = {
 	address,
 	encodeParameters,
+	encodePacked,
 	etherBalance,
 	etherGasCost,
 	etherExp,

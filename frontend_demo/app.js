@@ -166,7 +166,7 @@ let App = {
 			const lastUpdate = (pair.lastIsA && lastUpdateAIsOldEnough) || (!pair.lastIsA && !lastUpdateBIsOldEnough) 
 				? pair.updateA : pair.updateB;
 			const d = new Date(lastUpdate*1000);
-			const lastUpdateFormatted = `${d.getDate()}/${d.getMonth()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
+			const lastUpdateFormatted = `${d.getDate()}/${d.getMonth()+1} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
 			row	.append( $('<td>').html(
 					`1 ${token0Symbol} = ${price.toPrecision(5)} ${token1Symbol}<br>` + 
 					`1 ${token1Symbol} = ${(1/price).toPrecision(5)} ${token0Symbol}<br>` +
