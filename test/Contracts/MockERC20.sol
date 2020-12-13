@@ -1,6 +1,6 @@
-pragma solidity ^0.5.16;
+pragma solidity =0.5.16;
 
-import "./IERC20.sol";
+import "../../contracts/interfaces/IERC20.sol";
 import "./SafeMath.sol";
 
 contract MockERC20 is IERC20 {
