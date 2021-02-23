@@ -1,0 +1,981 @@
+{
+  "contractName": "SimpleUniswapOracleHarness",
+  "abi": [
+    {
+      "inputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "getPair",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "priceCumulativeA",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "priceCumulativeB",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint32",
+          "name": "updateA",
+          "type": "uint32"
+        },
+        {
+          "internalType": "uint32",
+          "name": "updateB",
+          "type": "uint32"
+        },
+        {
+          "internalType": "bool",
+          "name": "lastIsA",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "priceInverted",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "initialized",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "uniswapV2Pair",
+          "type": "address"
+        }
+      ],
+      "name": "getResult",
+      "outputs": [
+        {
+          "internalType": "uint32",
+          "name": "T",
+          "type": "uint32"
+        },
+        {
+          "internalType": "uint224",
+          "name": "price",
+          "type": "uint224"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint32",
+          "name": "_blockTimestamp",
+          "type": "uint32"
+        }
+      ],
+      "name": "harnessSetBlockTimestamp",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"getPair\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"priceCumulativeA\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"priceCumulativeB\",\"type\":\"uint256\"},{\"internalType\":\"uint32\",\"name\":\"updateA\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"updateB\",\"type\":\"uint32\"},{\"internalType\":\"bool\",\"name\":\"lastIsA\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"priceInverted\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"initialized\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"uniswapV2Pair\",\"type\":\"address\"}],\"name\":\"getResult\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"T\",\"type\":\"uint32\"},{\"internalType\":\"uint224\",\"name\":\"price\",\"type\":\"uint224\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"_blockTimestamp\",\"type\":\"uint32\"}],\"name\":\"harnessSetBlockTimestamp\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/test/SimpleUniswapOracleHarness.sol\":\"SimpleUniswapOracleHarness\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/SimpleUniswapOracle.sol\":{\"keccak256\":\"0xa54cebe3d76cd47ec38b73e8a94511d4d2150433fb530830a5cf0b5df57de707\",\"urls\":[\"bzz-raw://9802b2c5bd11be681f1151a6171a538ff9e4eeca5d6a0f7e6bd539250ec7b7b4\",\"dweb:/ipfs/QmYjvKU9ZggyLXLS9FEPhGTFRc1Ze5tV3sVPrcw3maPwNi\"]},\"/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/interfaces/IUniswapV2Pair.sol\":{\"keccak256\":\"0x1eee7f9247ef3bc86d1dad8cc8e968d0c949071ff1d2a6014dcd6f1a1c2e8f92\",\"urls\":[\"bzz-raw://2a37337444ae74f4c7332ee6bdde70d46499f2846f56cc71e4a6b3994207e8a0\",\"dweb:/ipfs/QmXTDZQpLEbkaaPkQ5c6nzZEefx8ceQ1bGQQz3huhgtfr4\"]},\"/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/libraries/SafeMath.sol\":{\"keccak256\":\"0x6653e37ff57a02b7b7f20199bb0fd5685756ced19a67f53328b42c9d2167ffd2\",\"urls\":[\"bzz-raw://1ab0575cc97bfb6c741c4e76fbb36a87fe320458d23dea7b6394259c9356ddcf\",\"dweb:/ipfs/QmbH6Qu2JSAmSgfhUA7gMmp7BBks9BBsufdGepewqpHssf\"]},\"/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/libraries/UQ112x112.sol\":{\"keccak256\":\"0x8963ba150d7527856630a326f22db8373cfabe8eb3fd248cde7aaac085fa84fd\",\"urls\":[\"bzz-raw://a5bbd451779abbda80e74094bea4f8ce3adb06d7f6fa33984c152561f4c816ad\",\"dweb:/ipfs/QmdVHhpe3vnA13HpqVEoqagp6LDJ8P3hBTMsUbfGuAiBpZ\"]},\"/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/test/SimpleUniswapOracleHarness.sol\":{\"keccak256\":\"0xf577b217ad92580070f7947c35809a04d6c45afe46e427230685c4d5578470e8\",\"urls\":[\"bzz-raw://045055bac8324deca77d8e7d9d6c61b5905e455b491c2936f0b894a644f70d34\",\"dweb:/ipfs/Qmc5kiYxSdFB3Bikok4HSDJYX22CtJWdARYvsReSoprX5f\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610d39806100206000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c80631a788a0214610046578063446a37e0146100ec578063c82acfdd14610193575b600080fd5b6100886004803603602081101561005c57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506101c7565b604051808881526020018781526020018663ffffffff1663ffffffff1681526020018563ffffffff1663ffffffff16815260200184151515158152602001831515151581526020018215151515815260200197505050505050505060405180910390f35b61012e6004803603602081101561010257600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610250565b604051808363ffffffff1663ffffffff168152602001827bffffffffffffffffffffffffffffffffffffffffffffffffffffffff167bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390f35b6101c5600480360360208110156101a957600080fd5b81019080803563ffffffff1690602001909291905050506105b4565b005b60006020528060005260406000206000915090508060000154908060010154908060020160009054906101000a900463ffffffff16908060020160049054906101000a900463ffffffff16908060020160089054906101000a900460ff16908060020160099054906101000a900460ff169080600201600a9054906101000a900460ff16905087565b60008060008060008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020905061029d610c90565b6000808673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206040518060e001604052908160008201548152602001600182015481526020016002820160009054906101000a900463ffffffff1663ffffffff1663ffffffff1681526020016002820160049054906101000a900463ffffffff1663ffffffff1663ffffffff1681526020016002820160089054906101000a900460ff161515151581526020016002820160099054906101000a900460ff1615151515815260200160028201600a9054906101000a900460ff16151515158152505090508060c001516103b7576103ac85836105d8565b9350935050506105af565b60006103c1610785565b9050600082608001516103d85782606001516103de565b82604001515b905060006103f0888560a001516107ce565b9050600061025883850363ffffffff16106104c757846080015161041857846020015161041e565b84600001515b905084608001511561047857818660010181905550838660020160046101000a81548163ffffffff021916908363ffffffff16021790555060008660020160086101000a81548160ff0219169083151502179055506104c2565b818660000181905550838660020160006101000a81548163ffffffff021916908363ffffffff16021790555060018660020160086101000a81548160ff0219169083151502179055505b61057e565b84608001516104da5784604001516104e0565b84606001515b925084608001516104f55784600001516104fb565b84602001515b905061025883850363ffffffff16101561057d576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601e8152602001807f53696d706c65556e69737761704f7261636c653a204e4f545f5245414459000081525060200191505060405180910390fd5b5b82840397506105a66105a18963ffffffff16838503610a3e90919063ffffffff16565b610a88565b96505050505050505b915091565b80600160006101000a81548163ffffffff021916908363ffffffff16021790555050565b60008060008060008673ffffffffffffffffffffffffffffffffffffffff16630902f1ac6040518163ffffffff1660e01b815260040160606040518083038186803b15801561062657600080fd5b505afa15801561063a573d6000803e3d6000fd5b505050506040513d606081101561065057600080fd5b810190808051906020019092919080519060200190929190805190602001909291905050509250925092506000826dffffffffffffffffffffffffffff16846dffffffffffffffffffffffffffff1611905060006106ae89836107ce565b90508088600001819055508088600101819055506106ca610785565b8860020160006101000a81548163ffffffff021916908363ffffffff1602179055506106f4610785565b8860020160046101000a81548163ffffffff021916908363ffffffff16021790555060018860020160086101000a81548160ff021916908315150217905550818860020160096101000a81548160ff021916908315150217905550600188600201600a6101000a81548160ff0219169083151502179055506000808191508090509650965050505050509250929050565b600080600160009054906101000a900463ffffffff1663ffffffff16146107c057600160009054906101000a900463ffffffff1690506107cb565b6107c8610b29565b90505b90565b60008161085b578273ffffffffffffffffffffffffffffffffffffffff16635909c0d56040518163ffffffff1660e01b815260040160206040518083038186803b15801561081b57600080fd5b505afa15801561082f573d6000803e3d6000fd5b505050506040513d602081101561084557600080fd5b81019080805190602001909291905050506108dd565b8273ffffffffffffffffffffffffffffffffffffffff16635a3d54936040518163ffffffff1660e01b815260040160206040518083038186803b1580156108a157600080fd5b505afa1580156108b5573d6000803e3d6000fd5b505050506040513d60208110156108cb57600080fd5b81019080805190602001909291905050505b905060008060008573ffffffffffffffffffffffffffffffffffffffff16630902f1ac6040518163ffffffff1660e01b815260040160606040518083038186803b15801561092a57600080fd5b505afa15801561093e573d6000803e3d6000fd5b505050506040513d606081101561095457600080fd5b810190808051906020019092919080519060200190929190805190602001909291905050509250925092506000856109c4576109bf8461099385610b3f565b7bffffffffffffffffffffffffffffffffffffffffffffffffffffffff16610b6a90919063ffffffff16565b6109fe565b6109fd836109d186610b3f565b7bffffffffffffffffffffffffffffffffffffffffffffffffffffffff16610b6a90919063ffffffff16565b5b905081610a09610785565b0363ffffffff16817bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1602850194505050505092915050565b6000610a8083836040518060400160405280601a81526020017f536166654d6174683a206469766973696f6e206279207a65726f000000000000815250610bca565b905092915050565b60007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7bffffffffffffffffffffffffffffffffffffffffffffffffffffffff16821115610b21576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401808060200182810382526025815260200180610ce06025913960400191505060405180910390fd5b819050919050565b60006401000000004281610b3957fe5b06905090565b60006e010000000000000000000000000000826dffffffffffffffffffffffffffff16029050919050565b6000816dffffffffffffffffffffffffffff167bffffffffffffffffffffffffffffffffffffffffffffffffffffffff16837bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1681610bc157fe5b04905092915050565b60008083118290610c76576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825283818151815260200191508051906020019080838360005b83811015610c3b578082015181840152602081019050610c20565b50505050905090810190601f168015610c685780820380516001836020036101000a031916815260200191505b509250505060405180910390fd5b506000838581610c8257fe5b049050809150509392505050565b6040518060e001604052806000815260200160008152602001600063ffffffff168152602001600063ffffffff168152602001600015158152602001600015158152602001600015158152509056fe53696d706c65556e69737761704f7261636c653a2055494e543232345f4f564552464c4f57a265627a7a7231582035cdad9078d5cad924b6bac36af836fa6ec7914fbbac6597fa7d15960729aff364736f6c63430005100032",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100415760003560e01c80631a788a0214610046578063446a37e0146100ec578063c82acfdd14610193575b600080fd5b6100886004803603602081101561005c57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506101c7565b604051808881526020018781526020018663ffffffff1663ffffffff1681526020018563ffffffff1663ffffffff16815260200184151515158152602001831515151581526020018215151515815260200197505050505050505060405180910390f35b61012e6004803603602081101561010257600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610250565b604051808363ffffffff1663ffffffff168152602001827bffffffffffffffffffffffffffffffffffffffffffffffffffffffff167bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390f35b6101c5600480360360208110156101a957600080fd5b81019080803563ffffffff1690602001909291905050506105b4565b005b60006020528060005260406000206000915090508060000154908060010154908060020160009054906101000a900463ffffffff16908060020160049054906101000a900463ffffffff16908060020160089054906101000a900460ff16908060020160099054906101000a900460ff169080600201600a9054906101000a900460ff16905087565b60008060008060008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020905061029d610c90565b6000808673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206040518060e001604052908160008201548152602001600182015481526020016002820160009054906101000a900463ffffffff1663ffffffff1663ffffffff1681526020016002820160049054906101000a900463ffffffff1663ffffffff1663ffffffff1681526020016002820160089054906101000a900460ff161515151581526020016002820160099054906101000a900460ff1615151515815260200160028201600a9054906101000a900460ff16151515158152505090508060c001516103b7576103ac85836105d8565b9350935050506105af565b60006103c1610785565b9050600082608001516103d85782606001516103de565b82604001515b905060006103f0888560a001516107ce565b9050600061025883850363ffffffff16106104c757846080015161041857846020015161041e565b84600001515b905084608001511561047857818660010181905550838660020160046101000a81548163ffffffff021916908363ffffffff16021790555060008660020160086101000a81548160ff0219169083151502179055506104c2565b818660000181905550838660020160006101000a81548163ffffffff021916908363ffffffff16021790555060018660020160086101000a81548160ff0219169083151502179055505b61057e565b84608001516104da5784604001516104e0565b84606001515b925084608001516104f55784600001516104fb565b84602001515b905061025883850363ffffffff16101561057d576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601e8152602001807f53696d706c65556e69737761704f7261636c653a204e4f545f5245414459000081525060200191505060405180910390fd5b5b82840397506105a66105a18963ffffffff16838503610a3e90919063ffffffff16565b610a88565b96505050505050505b915091565b80600160006101000a81548163ffffffff021916908363ffffffff16021790555050565b60008060008060008673ffffffffffffffffffffffffffffffffffffffff16630902f1ac6040518163ffffffff1660e01b815260040160606040518083038186803b15801561062657600080fd5b505afa15801561063a573d6000803e3d6000fd5b505050506040513d606081101561065057600080fd5b810190808051906020019092919080519060200190929190805190602001909291905050509250925092506000826dffffffffffffffffffffffffffff16846dffffffffffffffffffffffffffff1611905060006106ae89836107ce565b90508088600001819055508088600101819055506106ca610785565b8860020160006101000a81548163ffffffff021916908363ffffffff1602179055506106f4610785565b8860020160046101000a81548163ffffffff021916908363ffffffff16021790555060018860020160086101000a81548160ff021916908315150217905550818860020160096101000a81548160ff021916908315150217905550600188600201600a6101000a81548160ff0219169083151502179055506000808191508090509650965050505050509250929050565b600080600160009054906101000a900463ffffffff1663ffffffff16146107c057600160009054906101000a900463ffffffff1690506107cb565b6107c8610b29565b90505b90565b60008161085b578273ffffffffffffffffffffffffffffffffffffffff16635909c0d56040518163ffffffff1660e01b815260040160206040518083038186803b15801561081b57600080fd5b505afa15801561082f573d6000803e3d6000fd5b505050506040513d602081101561084557600080fd5b81019080805190602001909291905050506108dd565b8273ffffffffffffffffffffffffffffffffffffffff16635a3d54936040518163ffffffff1660e01b815260040160206040518083038186803b1580156108a157600080fd5b505afa1580156108b5573d6000803e3d6000fd5b505050506040513d60208110156108cb57600080fd5b81019080805190602001909291905050505b905060008060008573ffffffffffffffffffffffffffffffffffffffff16630902f1ac6040518163ffffffff1660e01b815260040160606040518083038186803b15801561092a57600080fd5b505afa15801561093e573d6000803e3d6000fd5b505050506040513d606081101561095457600080fd5b810190808051906020019092919080519060200190929190805190602001909291905050509250925092506000856109c4576109bf8461099385610b3f565b7bffffffffffffffffffffffffffffffffffffffffffffffffffffffff16610b6a90919063ffffffff16565b6109fe565b6109fd836109d186610b3f565b7bffffffffffffffffffffffffffffffffffffffffffffffffffffffff16610b6a90919063ffffffff16565b5b905081610a09610785565b0363ffffffff16817bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1602850194505050505092915050565b6000610a8083836040518060400160405280601a81526020017f536166654d6174683a206469766973696f6e206279207a65726f000000000000815250610bca565b905092915050565b60007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7bffffffffffffffffffffffffffffffffffffffffffffffffffffffff16821115610b21576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401808060200182810382526025815260200180610ce06025913960400191505060405180910390fd5b819050919050565b60006401000000004281610b3957fe5b06905090565b60006e010000000000000000000000000000826dffffffffffffffffffffffffffff16029050919050565b6000816dffffffffffffffffffffffffffff167bffffffffffffffffffffffffffffffffffffffffffffffffffffffff16837bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1681610bc157fe5b04905092915050565b60008083118290610c76576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825283818151815260200191508051906020019080838360005b83811015610c3b578082015181840152602081019050610c20565b50505050905090810190601f168015610c685780820380516001836020036101000a031916815260200191505b509250505060405180910390fd5b506000838581610c8257fe5b049050809150509392505050565b6040518060e001604052806000815260200160008152602001600063ffffffff168152602001600063ffffffff168152602001600015158152602001600015158152602001600015158152509056fe53696d706c65556e69737761704f7261636c653a2055494e543232345f4f564552464c4f57a265627a7a7231582035cdad9078d5cad924b6bac36af836fa6ec7914fbbac6597fa7d15960729aff364736f6c63430005100032",
+  "sourceMap": "68:460:12:-;;;179:23;8:9:-1;5:2;;;30:1;27;20:12;5:2;179:23:12;68:460;;;;;;",
+  "deployedSourceMap": "68:460:12:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;68:460:12;;;;;;;;;;;;;;;;;;;;;;;;;;;;;486:39:0;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;486:39:0;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2050:1430;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;2050:1430:0;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;214:118:12;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;214:118:12;;;;;;;;;;;;;;;;;;;:::i;:::-;;486:39:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;2050:1430::-;2110:8;2120:13;2140:24;2167:7;:22;2175:13;2167:22;;;;;;;;;;;;;;;2140:49;;2194:16;;:::i;:::-;2213:7;:22;2221:13;2213:22;;;;;;;;;;;;;;;2194:41;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2249:4;:16;;;2244:68;;2274:38;2285:13;2300:11;2274:10;:38::i;:::-;2267:45;;;;;;;;2244:68;2321:21;2345:19;:17;:19::i;:::-;2321:43;;2369:17;2389:4;:12;;;:42;;2419:4;:12;;;2389:42;;;2404:4;:12;;;2389:42;2369:62;;2436:30;2469:60;2495:13;2510:4;:18;;;2469:25;:60::i;:::-;2436:93;;2534:27;299:3;2591:10;2574:14;:27;:40;;;2570:789;;2657:4;:12;;;:60;;2696:4;:21;;;2657:60;;;2672:4;:21;;;2657:60;2635:82;;2727:4;:12;;;2723:311;;;2779:22;2748:11;:28;;:53;;;;2830:14;2808:11;:19;;;:36;;;;;;;;;;;;;;;;;;2873:5;2851:11;:19;;;:27;;;;;;;;;;;;;;;;;;2723:311;;;2929:22;2898:11;:28;;:53;;;;2980:14;2958:11;:19;;;:36;;;;;;;;;;;;;;;;;;3023:4;3001:11;:19;;;:26;;;;;;;;;;;;;;;;;;2723:311;2570:789;;;3134:4;:12;;;:42;;3164:4;:12;;;3134:42;;;3149:4;:12;;;3134:42;3121:55;;3204:4;:12;;;:60;;3243:4;:21;;;3204:60;;;3219:4;:21;;;3204:60;3182:82;;299:3;3295:10;3278:14;:27;:40;;;;3270:83;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2570:789;3388:10;3371:14;:27;3367:31;;3411:64;3421:53;3472:1;3421:53;;3447:19;3422:22;:44;3421:50;;:53;;;;:::i;:::-;3411:9;:64::i;:::-;3403:72;;2050:1430;;;;;;;;;;:::o;214:118:12:-;309:15;292:14;;:32;;;;;;;;;;;;;;;;;;214:118;:::o;1336:708:0:-;1422:8;1432:13;1453:16;1471;1489:25;1533:13;1518:41;;;:43;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1518:43:0;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1518:43:0;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;1518:43:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1452:109;;;;;;1566:18;1599:8;1588:19;;:8;:19;;;1566:42;;1613:30;1646:55;1672:13;1687;1646:25;:55::i;:::-;1613:88;;1737:22;1706:11;:28;;:53;;;;1795:22;1764:11;:28;;:53;;;;1844:19;:17;:19::i;:::-;1822:11;:19;;;:41;;;;;;;;;;;;;;;;;;1890:19;:17;:19::i;:::-;1868:11;:19;;;:41;;;;;;;;;;;;;;;;;;1936:4;1914:11;:19;;;:26;;;;;;;;;;;;;;;;;;1973:13;1945:11;:25;;;:41;;;;;;;;;;;;;;;;;;2017:4;1991:11;:23;;;:30;;;;;;;;;;;;;;;;;;2034:1;2037;2026:13;;;;;;;;;;;;;;;1336:708;;;;;:::o;341:156:12:-;393:6;431:1;413:14;;;;;;;;;;;:19;;;409:46;;441:14;;;;;;;;;;;434:21;;;;409:46;467:25;:23;:25::i;:::-;460:32;;341:156;;:::o;710:620:0:-;805:23;853:13;:133;;949:13;934:50;;;:52;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;934:52:0;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;934:52:0;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;934:52:0;;;;;;;;;;;;;;;;853:133;;;889:13;874:50;;;:52;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;874:52:0;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;874:52:0;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;874:52:0;;;;;;;;;;;;;;;;853:133;835:151;;992:16;1010;1028:25;1072:13;1057:41;;;:43;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1057:43:0;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1057:43:0;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;1057:43:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;991:109;;;;;;1105:17;1125:13;:113;;1196:42;1229:8;1196:26;1213:8;1196:16;:26::i;:::-;:32;;;;:42;;;;:::i;:::-;1125:113;;;1146:42;1179:8;1146:26;1163:8;1146:16;:26::i;:::-;:32;;;;:42;;;;:::i;:::-;1125:113;1105:133;;1306:18;1284:19;:17;:19::i;:::-;:40;1262:63;;1270:9;1262:18;;:63;1243:82;;;;710:620;;;;;;;;:::o;4267:130:6:-;4325:7;4351:39;4355:1;4358;4351:39;;;;;;;;;;;;;;;;;:3;:39::i;:::-;4344:46;;4267:130;;;;:::o;532:172:0:-;589:7;628:2;611:20;;:5;:20;;603:70;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;693:5;678:21;;532:172;;;:::o;3511:108::-;3563:6;3608:5;3590:15;:23;;;;;;3576:38;;3511:108;:::o;283:118:8:-;333:9;231:6;366:1;358:10;;:17;354:21;;283:118;;;:::o;469:106::-;529:9;566:1;558:10;;554:14;;:1;:14;;;;;;;;550:18;;469:106;;;;:::o;4872:338:6:-;4958:7;5055:1;5051;:5;5058:12;5043:28;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;99:1;94:3;90:11;84:18;80:1;75:3;71:11;64:39;52:2;49:1;45:10;40:15;;8:100;;;12:14;5043:28:6;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5081:9;5097:1;5093;:5;;;;;;5081:17;;5202:1;5195:8;;;4872:338;;;;;:::o;68:460:12:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
+  "source": "pragma solidity ^0.5.16;\r\n\r\nimport \"../SimpleUniswapOracle.sol\";\r\n\r\ncontract SimpleUniswapOracleHarness is SimpleUniswapOracle {\r\n\r\n    uint32 internal blockTimestamp;\r\n    \r\n    constructor() public {}\r\n    \r\n    function harnessSetBlockTimestamp(uint32 _blockTimestamp) external {\r\n        blockTimestamp = _blockTimestamp;\r\n    }\r\n    \r\n\tfunction getBlockTimestamp() internal view returns (uint32) {\r\n\t    if (blockTimestamp != 0) return blockTimestamp;\r\n\t\treturn super.getBlockTimestamp();\r\n\t}    \r\n\t\r\n\t/*** VIEW ***/\r\n\r\n\r\n}",
+  "sourcePath": "C:/Users/simor/Desktop/simple-uniswap-oracle/contracts/test/SimpleUniswapOracleHarness.sol",
+  "ast": {
+    "absolutePath": "/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/test/SimpleUniswapOracleHarness.sol",
+    "exportedSymbols": {
+      "SimpleUniswapOracleHarness": [
+        3759
+      ]
+    },
+    "id": 3760,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3723,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".16"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:12"
+      },
+      {
+        "absolutePath": "/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/SimpleUniswapOracle.sol",
+        "file": "../SimpleUniswapOracle.sol",
+        "id": 3724,
+        "nodeType": "ImportDirective",
+        "scope": 3760,
+        "sourceUnit": 388,
+        "src": "28:36:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 3725,
+              "name": "SimpleUniswapOracle",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 387,
+              "src": "107:19:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_SimpleUniswapOracle_$387",
+                "typeString": "contract SimpleUniswapOracle"
+              }
+            },
+            "id": 3726,
+            "nodeType": "InheritanceSpecifier",
+            "src": "107:19:12"
+          }
+        ],
+        "contractDependencies": [
+          387
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 3759,
+        "linearizedBaseContracts": [
+          3759,
+          387
+        ],
+        "name": "SimpleUniswapOracleHarness",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 3728,
+            "name": "blockTimestamp",
+            "nodeType": "VariableDeclaration",
+            "scope": 3759,
+            "src": "136:30:12",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint32",
+              "typeString": "uint32"
+            },
+            "typeName": {
+              "id": 3727,
+              "name": "uint32",
+              "nodeType": "ElementaryTypeName",
+              "src": "136:6:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint32",
+                "typeString": "uint32"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 3731,
+              "nodeType": "Block",
+              "src": "200:2:12",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 3732,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3729,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "190:2:12"
+            },
+            "returnParameters": {
+              "id": 3730,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "200:0:12"
+            },
+            "scope": 3759,
+            "src": "179:23:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3741,
+              "nodeType": "Block",
+              "src": "281:51:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 3739,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 3737,
+                      "name": "blockTimestamp",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3728,
+                      "src": "292:14:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint32",
+                        "typeString": "uint32"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 3738,
+                      "name": "_blockTimestamp",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3734,
+                      "src": "309:15:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint32",
+                        "typeString": "uint32"
+                      }
+                    },
+                    "src": "292:32:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "id": 3740,
+                  "nodeType": "ExpressionStatement",
+                  "src": "292:32:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 3742,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "harnessSetBlockTimestamp",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3735,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3734,
+                  "name": "_blockTimestamp",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3742,
+                  "src": "248:22:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 3733,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "248:6:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "247:24:12"
+            },
+            "returnParameters": {
+              "id": 3736,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "281:0:12"
+            },
+            "scope": 3759,
+            "src": "214:118:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 3757,
+              "nodeType": "Block",
+              "src": "401:96:12",
+              "statements": [
+                {
+                  "condition": {
+                    "argumentTypes": null,
+                    "commonType": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    },
+                    "id": 3749,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "argumentTypes": null,
+                      "id": 3747,
+                      "name": "blockTimestamp",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3728,
+                      "src": "413:14:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint32",
+                        "typeString": "uint32"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "!=",
+                    "rightExpression": {
+                      "argumentTypes": null,
+                      "hexValue": "30",
+                      "id": 3748,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "431:1:12",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_0_by_1",
+                        "typeString": "int_const 0"
+                      },
+                      "value": "0"
+                    },
+                    "src": "413:19:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": null,
+                  "id": 3752,
+                  "nodeType": "IfStatement",
+                  "src": "409:46:12",
+                  "trueBody": {
+                    "expression": {
+                      "argumentTypes": null,
+                      "id": 3750,
+                      "name": "blockTimestamp",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3728,
+                      "src": "441:14:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint32",
+                        "typeString": "uint32"
+                      }
+                    },
+                    "functionReturnParameters": 3746,
+                    "id": 3751,
+                    "nodeType": "Return",
+                    "src": "434:21:12"
+                  }
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 3753,
+                        "name": "super",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3805,
+                        "src": "467:5:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_super$_SimpleUniswapOracleHarness_$3759",
+                          "typeString": "contract super SimpleUniswapOracleHarness"
+                        }
+                      },
+                      "id": 3754,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "getBlockTimestamp",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 386,
+                      "src": "467:23:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$__$returns$_t_uint32_$",
+                        "typeString": "function () view returns (uint32)"
+                      }
+                    },
+                    "id": 3755,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "467:25:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "functionReturnParameters": 3746,
+                  "id": 3756,
+                  "nodeType": "Return",
+                  "src": "460:32:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 3758,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getBlockTimestamp",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3743,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "367:2:12"
+            },
+            "returnParameters": {
+              "id": 3746,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3745,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3758,
+                  "src": "393:6:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 3744,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "393:6:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "392:8:12"
+            },
+            "scope": 3759,
+            "src": "341:156:12",
+            "stateMutability": "view",
+            "superFunction": 386,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 3760,
+        "src": "68:460:12"
+      }
+    ],
+    "src": "0:528:12"
+  },
+  "legacyAST": {
+    "absolutePath": "/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/test/SimpleUniswapOracleHarness.sol",
+    "exportedSymbols": {
+      "SimpleUniswapOracleHarness": [
+        3759
+      ]
+    },
+    "id": 3760,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3723,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".16"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:12"
+      },
+      {
+        "absolutePath": "/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/SimpleUniswapOracle.sol",
+        "file": "../SimpleUniswapOracle.sol",
+        "id": 3724,
+        "nodeType": "ImportDirective",
+        "scope": 3760,
+        "sourceUnit": 388,
+        "src": "28:36:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 3725,
+              "name": "SimpleUniswapOracle",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 387,
+              "src": "107:19:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_SimpleUniswapOracle_$387",
+                "typeString": "contract SimpleUniswapOracle"
+              }
+            },
+            "id": 3726,
+            "nodeType": "InheritanceSpecifier",
+            "src": "107:19:12"
+          }
+        ],
+        "contractDependencies": [
+          387
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 3759,
+        "linearizedBaseContracts": [
+          3759,
+          387
+        ],
+        "name": "SimpleUniswapOracleHarness",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 3728,
+            "name": "blockTimestamp",
+            "nodeType": "VariableDeclaration",
+            "scope": 3759,
+            "src": "136:30:12",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint32",
+              "typeString": "uint32"
+            },
+            "typeName": {
+              "id": 3727,
+              "name": "uint32",
+              "nodeType": "ElementaryTypeName",
+              "src": "136:6:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint32",
+                "typeString": "uint32"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 3731,
+              "nodeType": "Block",
+              "src": "200:2:12",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 3732,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3729,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "190:2:12"
+            },
+            "returnParameters": {
+              "id": 3730,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "200:0:12"
+            },
+            "scope": 3759,
+            "src": "179:23:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3741,
+              "nodeType": "Block",
+              "src": "281:51:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 3739,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 3737,
+                      "name": "blockTimestamp",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3728,
+                      "src": "292:14:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint32",
+                        "typeString": "uint32"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 3738,
+                      "name": "_blockTimestamp",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3734,
+                      "src": "309:15:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint32",
+                        "typeString": "uint32"
+                      }
+                    },
+                    "src": "292:32:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "id": 3740,
+                  "nodeType": "ExpressionStatement",
+                  "src": "292:32:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 3742,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "harnessSetBlockTimestamp",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3735,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3734,
+                  "name": "_blockTimestamp",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3742,
+                  "src": "248:22:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 3733,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "248:6:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "247:24:12"
+            },
+            "returnParameters": {
+              "id": 3736,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "281:0:12"
+            },
+            "scope": 3759,
+            "src": "214:118:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 3757,
+              "nodeType": "Block",
+              "src": "401:96:12",
+              "statements": [
+                {
+                  "condition": {
+                    "argumentTypes": null,
+                    "commonType": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    },
+                    "id": 3749,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "argumentTypes": null,
+                      "id": 3747,
+                      "name": "blockTimestamp",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3728,
+                      "src": "413:14:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint32",
+                        "typeString": "uint32"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "!=",
+                    "rightExpression": {
+                      "argumentTypes": null,
+                      "hexValue": "30",
+                      "id": 3748,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "431:1:12",
+                      "subdenomination": null,
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_0_by_1",
+                        "typeString": "int_const 0"
+                      },
+                      "value": "0"
+                    },
+                    "src": "413:19:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": null,
+                  "id": 3752,
+                  "nodeType": "IfStatement",
+                  "src": "409:46:12",
+                  "trueBody": {
+                    "expression": {
+                      "argumentTypes": null,
+                      "id": 3750,
+                      "name": "blockTimestamp",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3728,
+                      "src": "441:14:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint32",
+                        "typeString": "uint32"
+                      }
+                    },
+                    "functionReturnParameters": 3746,
+                    "id": 3751,
+                    "nodeType": "Return",
+                    "src": "434:21:12"
+                  }
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 3753,
+                        "name": "super",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3805,
+                        "src": "467:5:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_super$_SimpleUniswapOracleHarness_$3759",
+                          "typeString": "contract super SimpleUniswapOracleHarness"
+                        }
+                      },
+                      "id": 3754,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "getBlockTimestamp",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 386,
+                      "src": "467:23:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$__$returns$_t_uint32_$",
+                        "typeString": "function () view returns (uint32)"
+                      }
+                    },
+                    "id": 3755,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "467:25:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "functionReturnParameters": 3746,
+                  "id": 3756,
+                  "nodeType": "Return",
+                  "src": "460:32:12"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 3758,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getBlockTimestamp",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3743,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "367:2:12"
+            },
+            "returnParameters": {
+              "id": 3746,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3745,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3758,
+                  "src": "393:6:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 3744,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "393:6:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "392:8:12"
+            },
+            "scope": 3759,
+            "src": "341:156:12",
+            "stateMutability": "view",
+            "superFunction": 386,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 3760,
+        "src": "68:460:12"
+      }
+    ],
+    "src": "0:528:12"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
+  },
+  "networks": {
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0x8B205A5f3b88523Fb173A79e8a4fC54613374b98",
+      "transactionHash": "0x8356fba311f94d159447faf39d5e0cb37b40997fc19ab1f7244865fad94a8f44"
+    }
+  },
+  "schemaVersion": "3.3.2",
+  "updatedAt": "2020-11-20T00:22:49.391Z",
+  "networkType": "ethereum",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

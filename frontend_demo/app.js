@@ -37,7 +37,7 @@ let App = {
 		if (window.ethereum) {
 			App.web3Provider = window.ethereum;
 			ethereum.autoRefreshOnNetworkChange = false;
-			web3 = new Web3(ethereum);
+			//web3 = new Web3(ethereum);
 			try {
 				// Request account access if needed
 				await ethereum.request({ method: 'eth_requestAccounts' }); 

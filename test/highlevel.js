@@ -13,7 +13,7 @@ require('chai')
 	.use(require('chai-as-promised'))
 	.should();
  
-const MIN_T = 3600;
+const MIN_T = 1800;
 
 const priceCalculator = {
 	lastPrice: null,

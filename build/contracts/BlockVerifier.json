@@ -1,0 +1,562 @@
+{
+  "contractName": "BlockVerifier",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/libraries/BlockVerifier.sol\":\"BlockVerifier\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/libraries/BlockVerifier.sol\":{\"keccak256\":\"0xb5b71e5d5e3d2063500dc804eb13ef3f47178b3216a471ef4529e1098ae4acba\",\"urls\":[\"bzz-raw://84fcfcdf310f2f5f582ac6084fc9d8186540c15249def1e16a876c3a79870d53\",\"dweb:/ipfs/QmWDGbiLJwUUe5uM2scdrg5d8k6DBn61bTwYGdU2uwETYn\"]}},\"version\":1}",
+  "bytecode": "0x60556023600b82828239805160001a607314601657fe5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea265627a7a723158209b1d237c23ed48db661b3562874c7590919645feb245dfd0c3e22906ac511f8864736f6c63430005100032",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea265627a7a723158209b1d237c23ed48db661b3562874c7590919645feb245dfd0c3e22906ac511f8864736f6c63430005100032",
+  "sourceMap": "26:3381:3:-;;132:2:-1;166:7;155:9;146:7;137:37;255:7;249:14;246:1;241:23;235:4;232:33;222:2;;269:9;222:2;293:9;290:1;283:20;323:4;314:7;306:22;347:7;338;331:24",
+  "deployedSourceMap": "26:3381:3:-;;;;;;;;",
+  "source": "pragma solidity ^0.5.16;\n\nlibrary BlockVerifier {\n\tfunction extractStateRootAndTimestamp(bytes memory rlpBytes) internal view returns (bytes32 stateRoot, uint256 blockTimestamp, uint256 blockNumber) {\n\t\tassembly {\n\t\t\tfunction revertWithReason(message, length) {\n\t\t\t\tmstore(0, 0x08c379a000000000000000000000000000000000000000000000000000000000)\n\t\t\t\tmstore(4, 0x20)\n\t\t\t\tmstore(0x24, length)\n\t\t\t\tmstore(0x44, message)\n\t\t\t\trevert(0, add(0x44, length))\n\t\t\t}\n\n\t\t\tfunction readDynamic(prefixPointer) -> dataPointer, dataLength {\n\t\t\t\tlet value := byte(0, mload(prefixPointer))\n\t\t\t\tswitch lt(value, 0x80)\n\t\t\t\tcase 1 {\n\t\t\t\t\tdataPointer := prefixPointer\n\t\t\t\t\tdataLength := 1\n\t\t\t\t}\n\t\t\t\tcase 0 {\n\t\t\t\t\tdataPointer := add(prefixPointer, 1)\n\t\t\t\t\tdataLength := sub(value, 0x80)\n\t\t\t\t}\n\t\t\t}\n\n\t\t\t// get the length of the data\n\t\t\tlet rlpLength := mload(rlpBytes)\n\t\t\t// move pointer forward, ahead of length\n\t\t\trlpBytes := add(rlpBytes, 0x20)\n\n\t\t\t// we know the length of the block will be between 483 bytes and 709 bytes, which means it will have 2 length bytes after the prefix byte, so we can skip 3 bytes in\n\t\t\t// CONSIDER: we could save a trivial amount of gas by compressing most of this into a single add instruction\n\t\t\tlet stateRootPointer\n\t\t\t{ //avoid stack too deep\n\t\t\tlet parentHashPrefixPointer := add(rlpBytes, 3)\n\t\t\tlet parentHashPointer := add(parentHashPrefixPointer, 1)\n\t\t\tlet uncleHashPrefixPointer := add(parentHashPointer, 32)\n\t\t\tlet uncleHashPointer := add(uncleHashPrefixPointer, 1)\n\t\t\tlet minerAddressPrefixPointer := add(uncleHashPointer, 32)\n\t\t\tlet minerAddressPointer := add(minerAddressPrefixPointer, 1)\n\t\t\tlet stateRootPrefixPointer := add(minerAddressPointer, 20)\n\t\t\tstateRootPointer := add(stateRootPrefixPointer, 1)\n\t\t\t}\n\t\t\tlet blockNumberPointer, blockNumberLength\n\t\t\t{ //avoid stack too deep\n\t\t\tlet transactionRootPrefixPointer := add(stateRootPointer, 32)\n\t\t\tlet transactionRootPointer := add(transactionRootPrefixPointer, 1)\n\t\t\tlet receiptsRootPrefixPointer := add(transactionRootPointer, 32)\n\t\t\tlet receiptsRootPointer := add(receiptsRootPrefixPointer, 1)\n\t\t\tlet logsBloomPrefixPointer := add(receiptsRootPointer, 32)\n\t\t\tlet logsBloomPointer := add(logsBloomPrefixPointer, 3)\n\t\t\tlet difficultyPrefixPointer := add(logsBloomPointer, 256)\n\t\t\tlet difficultyPointer, difficultyLength := readDynamic(difficultyPrefixPointer)\n\t\t\tlet blockNumberPrefixPointer := add(difficultyPointer, difficultyLength)\n\t\t\tblockNumberPointer, blockNumberLength := readDynamic(blockNumberPrefixPointer)\n\t\t\t}\n\t\t\tlet timestampPointer, timestampLength\n\t\t\t{ //avoid stack too deep\n\t\t\tlet gasLimitPrefixPointer := add(blockNumberPointer, blockNumberLength)\n\t\t\tlet gasLimitPointer, gasLimitLength := readDynamic(gasLimitPrefixPointer)\n\t\t\tlet gasUsedPrefixPointer := add(gasLimitPointer, gasLimitLength)\n\t\t\tlet gasUsedPointer, gasUsedLength := readDynamic(gasUsedPrefixPointer)\n\t\t\tlet timestampPrefixPointer := add(gasUsedPointer, gasUsedLength)\n\t\t\ttimestampPointer, timestampLength := readDynamic(timestampPrefixPointer)\n\t\t\t}\n\t\t\tblockNumber := shr(sub(256, mul(blockNumberLength, 8)), mload(blockNumberPointer))\n\t\t\tlet blockHash := blockhash(blockNumber)\n\t\t\tlet rlpHash := keccak256(rlpBytes, rlpLength)\n\t\t\tif iszero(eq(blockHash, rlpHash)) { revertWithReason(\"blockHash != rlpHash\", 20) }\n\n\t\t\tstateRoot := mload(stateRootPointer)\n\t\t\tblockTimestamp := shr(sub(256, mul(timestampLength, 8)), mload(timestampPointer))\n\t\t}\n\t}\n}\n",
+  "sourcePath": "C:/Users/simor/Desktop/simple-uniswap-oracle/contracts/libraries/BlockVerifier.sol",
+  "ast": {
+    "absolutePath": "/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/libraries/BlockVerifier.sol",
+    "exportedSymbols": {
+      "BlockVerifier": [
+        1039
+      ]
+    },
+    "id": 1040,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1025,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".16"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:3"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "library",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 1039,
+        "linearizedBaseContracts": [
+          1039
+        ],
+        "name": "BlockVerifier",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 1037,
+              "nodeType": "Block",
+              "src": "199:3206:3",
+              "statements": [
+                {
+                  "externalReferences": [
+                    {
+                      "blockNumber": {
+                        "declaration": 1034,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "3125:11:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "rlpBytes": {
+                        "declaration": 1027,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "832:8:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "rlpBytes": {
+                        "declaration": 1027,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "889:8:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "rlpBytes": {
+                        "declaration": 1027,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "1292:8:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "rlpBytes": {
+                        "declaration": 1027,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "905:8:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "blockNumber": {
+                        "declaration": 1034,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "3012:11:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "rlpBytes": {
+                        "declaration": 1027,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "3166:8:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "stateRoot": {
+                        "declaration": 1030,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "3277:9:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "blockTimestamp": {
+                        "declaration": 1032,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "3317:14:3",
+                        "valueSize": 1
+                      }
+                    }
+                  ],
+                  "id": 1036,
+                  "nodeType": "InlineAssembly",
+                  "operations": "{\n    function revertWithReason(message, length)\n    {\n        mstore(0, 0x08c379a000000000000000000000000000000000000000000000000000000000)\n        mstore(4, 0x20)\n        mstore(0x24, length)\n        mstore(0x44, message)\n        revert(0, add(0x44, length))\n    }\n    function readDynamic(prefixPointer) -> dataPointer, dataLength\n    {\n        let value := byte(0, mload(prefixPointer))\n        switch lt(value, 0x80)\n        case 1 {\n            dataPointer := prefixPointer\n            dataLength := 1\n        }\n        case 0 {\n            dataPointer := add(prefixPointer, 1)\n            dataLength := sub(value, 0x80)\n        }\n    }\n    let rlpLength := mload(rlpBytes)\n    rlpBytes := add(rlpBytes, 0x20)\n    let stateRootPointer\n    {\n        let parentHashPrefixPointer := add(rlpBytes, 3)\n        let parentHashPointer := add(parentHashPrefixPointer, 1)\n        let uncleHashPrefixPointer := add(parentHashPointer, 32)\n        let uncleHashPointer := add(uncleHashPrefixPointer, 1)\n        let minerAddressPrefixPointer := add(uncleHashPointer, 32)\n        let minerAddressPointer := add(minerAddressPrefixPointer, 1)\n        let stateRootPrefixPointer := add(minerAddressPointer, 20)\n        stateRootPointer := add(stateRootPrefixPointer, 1)\n    }\n    let blockNumberPointer, blockNumberLength\n    {\n        let transactionRootPrefixPointer := add(stateRootPointer, 32)\n        let transactionRootPointer := add(transactionRootPrefixPointer, 1)\n        let receiptsRootPrefixPointer := add(transactionRootPointer, 32)\n        let receiptsRootPointer := add(receiptsRootPrefixPointer, 1)\n        let logsBloomPrefixPointer := add(receiptsRootPointer, 32)\n        let logsBloomPointer := add(logsBloomPrefixPointer, 3)\n        let difficultyPrefixPointer := add(logsBloomPointer, 256)\n        let difficultyPointer, difficultyLength := readDynamic(difficultyPrefixPointer)\n        let blockNumberPrefixPointer := add(difficultyPointer, difficultyLength)\n        blockNumberPointer, blockNumberLength := readDynamic(blockNumberPrefixPointer)\n    }\n    let timestampPointer, timestampLength\n    {\n        let gasLimitPrefixPointer := add(blockNumberPointer, blockNumberLength)\n        let gasLimitPointer, gasLimitLength := readDynamic(gasLimitPrefixPointer)\n        let gasUsedPrefixPointer := add(gasLimitPointer, gasLimitLength)\n        let gasUsedPointer, gasUsedLength := readDynamic(gasUsedPrefixPointer)\n        let timestampPrefixPointer := add(gasUsedPointer, gasUsedLength)\n        timestampPointer, timestampLength := readDynamic(timestampPrefixPointer)\n    }\n    blockNumber := shr(sub(256, mul(blockNumberLength, 8)), mload(blockNumberPointer))\n    let blockHash := blockhash(blockNumber)\n    let rlpHash := keccak256(rlpBytes, rlpLength)\n    if iszero(eq(blockHash, rlpHash))\n    {\n        revertWithReason(\"blockHash != rlpHash\", 20)\n    }\n    stateRoot := mload(stateRootPointer)\n    blockTimestamp := shr(sub(256, mul(timestampLength, 8)), mload(timestampPointer))\n}",
+                  "src": "203:3199:3"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1038,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "extractStateRootAndTimestamp",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1028,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1027,
+                  "name": "rlpBytes",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1038,
+                  "src": "89:21:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 1026,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "89:5:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "88:23:3"
+            },
+            "returnParameters": {
+              "id": 1035,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1030,
+                  "name": "stateRoot",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1038,
+                  "src": "135:17:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 1029,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "135:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1032,
+                  "name": "blockTimestamp",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1038,
+                  "src": "154:22:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1031,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "154:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1034,
+                  "name": "blockNumber",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1038,
+                  "src": "178:19:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1033,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "178:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "134:64:3"
+            },
+            "scope": 1039,
+            "src": "51:3354:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 1040,
+        "src": "26:3381:3"
+      }
+    ],
+    "src": "0:3408:3"
+  },
+  "legacyAST": {
+    "absolutePath": "/C/Users/simor/Desktop/simple-uniswap-oracle/contracts/libraries/BlockVerifier.sol",
+    "exportedSymbols": {
+      "BlockVerifier": [
+        1039
+      ]
+    },
+    "id": 1040,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1025,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".16"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:3"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "library",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 1039,
+        "linearizedBaseContracts": [
+          1039
+        ],
+        "name": "BlockVerifier",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 1037,
+              "nodeType": "Block",
+              "src": "199:3206:3",
+              "statements": [
+                {
+                  "externalReferences": [
+                    {
+                      "blockNumber": {
+                        "declaration": 1034,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "3125:11:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "rlpBytes": {
+                        "declaration": 1027,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "832:8:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "rlpBytes": {
+                        "declaration": 1027,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "889:8:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "rlpBytes": {
+                        "declaration": 1027,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "1292:8:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "rlpBytes": {
+                        "declaration": 1027,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "905:8:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "blockNumber": {
+                        "declaration": 1034,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "3012:11:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "rlpBytes": {
+                        "declaration": 1027,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "3166:8:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "stateRoot": {
+                        "declaration": 1030,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "3277:9:3",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "blockTimestamp": {
+                        "declaration": 1032,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "3317:14:3",
+                        "valueSize": 1
+                      }
+                    }
+                  ],
+                  "id": 1036,
+                  "nodeType": "InlineAssembly",
+                  "operations": "{\n    function revertWithReason(message, length)\n    {\n        mstore(0, 0x08c379a000000000000000000000000000000000000000000000000000000000)\n        mstore(4, 0x20)\n        mstore(0x24, length)\n        mstore(0x44, message)\n        revert(0, add(0x44, length))\n    }\n    function readDynamic(prefixPointer) -> dataPointer, dataLength\n    {\n        let value := byte(0, mload(prefixPointer))\n        switch lt(value, 0x80)\n        case 1 {\n            dataPointer := prefixPointer\n            dataLength := 1\n        }\n        case 0 {\n            dataPointer := add(prefixPointer, 1)\n            dataLength := sub(value, 0x80)\n        }\n    }\n    let rlpLength := mload(rlpBytes)\n    rlpBytes := add(rlpBytes, 0x20)\n    let stateRootPointer\n    {\n        let parentHashPrefixPointer := add(rlpBytes, 3)\n        let parentHashPointer := add(parentHashPrefixPointer, 1)\n        let uncleHashPrefixPointer := add(parentHashPointer, 32)\n        let uncleHashPointer := add(uncleHashPrefixPointer, 1)\n        let minerAddressPrefixPointer := add(uncleHashPointer, 32)\n        let minerAddressPointer := add(minerAddressPrefixPointer, 1)\n        let stateRootPrefixPointer := add(minerAddressPointer, 20)\n        stateRootPointer := add(stateRootPrefixPointer, 1)\n    }\n    let blockNumberPointer, blockNumberLength\n    {\n        let transactionRootPrefixPointer := add(stateRootPointer, 32)\n        let transactionRootPointer := add(transactionRootPrefixPointer, 1)\n        let receiptsRootPrefixPointer := add(transactionRootPointer, 32)\n        let receiptsRootPointer := add(receiptsRootPrefixPointer, 1)\n        let logsBloomPrefixPointer := add(receiptsRootPointer, 32)\n        let logsBloomPointer := add(logsBloomPrefixPointer, 3)\n        let difficultyPrefixPointer := add(logsBloomPointer, 256)\n        let difficultyPointer, difficultyLength := readDynamic(difficultyPrefixPointer)\n        let blockNumberPrefixPointer := add(difficultyPointer, difficultyLength)\n        blockNumberPointer, blockNumberLength := readDynamic(blockNumberPrefixPointer)\n    }\n    let timestampPointer, timestampLength\n    {\n        let gasLimitPrefixPointer := add(blockNumberPointer, blockNumberLength)\n        let gasLimitPointer, gasLimitLength := readDynamic(gasLimitPrefixPointer)\n        let gasUsedPrefixPointer := add(gasLimitPointer, gasLimitLength)\n        let gasUsedPointer, gasUsedLength := readDynamic(gasUsedPrefixPointer)\n        let timestampPrefixPointer := add(gasUsedPointer, gasUsedLength)\n        timestampPointer, timestampLength := readDynamic(timestampPrefixPointer)\n    }\n    blockNumber := shr(sub(256, mul(blockNumberLength, 8)), mload(blockNumberPointer))\n    let blockHash := blockhash(blockNumber)\n    let rlpHash := keccak256(rlpBytes, rlpLength)\n    if iszero(eq(blockHash, rlpHash))\n    {\n        revertWithReason(\"blockHash != rlpHash\", 20)\n    }\n    stateRoot := mload(stateRootPointer)\n    blockTimestamp := shr(sub(256, mul(timestampLength, 8)), mload(timestampPointer))\n}",
+                  "src": "203:3199:3"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1038,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "extractStateRootAndTimestamp",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1028,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1027,
+                  "name": "rlpBytes",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1038,
+                  "src": "89:21:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 1026,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "89:5:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "88:23:3"
+            },
+            "returnParameters": {
+              "id": 1035,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1030,
+                  "name": "stateRoot",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1038,
+                  "src": "135:17:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 1029,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "135:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1032,
+                  "name": "blockTimestamp",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1038,
+                  "src": "154:22:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1031,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "154:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1034,
+                  "name": "blockNumber",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1038,
+                  "src": "178:19:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1033,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "178:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "134:64:3"
+            },
+            "scope": 1039,
+            "src": "51:3354:3",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 1040,
+        "src": "26:3381:3"
+      }
+    ],
+    "src": "0:3408:3"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.3.2",
+  "updatedAt": "2020-11-19T20:52:12.206Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

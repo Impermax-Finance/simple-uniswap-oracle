@@ -17,7 +17,7 @@ require('chai')
   
 contract('SimpleUniswapOracle', function (accounts) {
 	let root;
-	const MIN_T = 3600;
+	const MIN_T = 1800;
 	before(async () => {
 		root = accounts[0];
 		const priceOracle = await makePriceOracle();
